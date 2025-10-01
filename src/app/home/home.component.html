@@ -1,0 +1,123 @@
+<!-- Navigation Bar -->
+<nav class="navbar" *ngIf="projectData">
+  <ul>
+    <li><a href="#hero" class="nav-link">Home</a></li>
+    <li><a href="#projects" class="nav-link">Projects</a></li>
+    <li><a href="#gallery" class="nav-link">Gallery</a></li>
+    <li><a href="#layouts" class="nav-link">Layouts</a></li>
+    <li><a href="#map" class="nav-link">Map</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero Banner -->
+<div id="hero" class="hero-banner" *ngIf="projectData"
+     [style.backgroundImage]="'url(assets/images/my-hero.jpg)'">
+  <div class="hero-overlay"></div>
+  <div class="hero-info">
+    <h1>{{ projectData.projectName }}</h1>
+    <h2>{{ projectData.descriptionTitle }}</h2>
+    <p><strong>Currency:</strong> {{ projectData.currency }}</p>
+    <p><strong>Tenure:</strong> {{ projectData.tenure }}</p>
+    <p><strong>Total Units:</strong> {{ projectData.totalUnit }}</p>
+  </div>
+</div>
+
+
+
+<!-- Project Details Section -->
+<section id="projects" class="project-details" *ngIf="projectData">
+  <div *ngFor="let detail of projectData.projectDetails" class="detail-card">
+    <img [src]="detail.imageUrl" alt="{{detail.name}}">
+    <h4>{{ detail.name }}</h4>
+    <p [innerHTML]="detail.description + '<br>' + detail.param1"></p>
+  </div>
+</section>
+
+<!-- Gallery Section -->
+<section id="gallery" class="gallery-section" *ngIf="galleryImages.length">
+  <h2>Gallery</h2>
+  <div class="gallery-grid">
+    <div *ngFor="let img of galleryImages; let i = index" class="gallery-item" (click)="openLightbox(i)">
+       <img [src]="'assets/images/' + img" alt="Gallery Image">
+    </div>
+  </div>
+
+  <!-- Lightbox Overlay -->
+  <div class="lightbox" *ngIf="lightboxOpen" (click)="closeLightbox()">
+    <img [src]="'assets/images/' + galleryImages[currentIndex]" class="lightbox-img">
+    <span class="prev" (click)="prevImage($event)">&#10094;</span>
+    <span class="next" (click)="nextImage($event)">&#10095;</span>
+  </div>
+</section>
+
+<!-- Layout Section -->
+<section id="layouts" class="layout-section">
+  <h2>Layouts</h2>
+  <div class="layout-grid">
+    <div class="layout-card" *ngFor="let layout of layoutImages; let idx = index" (click)="openLayout(idx)">
+      <img [src]="layout.img" alt="Layout Image">
+      <h4>{{ layout.title }}</h4>
+      <p>{{ layout.info }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Layout Lightbox -->
+<div class="layout-lightbox" *ngIf="layoutLightboxOpen" (click)="closeLayout()">
+  <img [src]="layoutImages[layoutIndex].img" class="lightbox-img">
+  <div class="lightbox-info">
+    <h4>{{ layoutImages[layoutIndex].title }}</h4>
+    <p>{{ layoutImages[layoutIndex].info }}</p>
+  </div>
+  <span class="prev" (click)="prevLayout($event)">&#10094;</span>
+  <span class="next" (click)="nextLayout($event)">&#10095;</span>
+</div>
+
+<!-- Map Section -->
+<section id="map" class="map-section" *ngIf="projectData">
+  <h2>Project Location</h2>
+  <img src="https://clouthaus.com.my/assets/web/images/en/preview-map.jpg" alt="Project Map" class="map-image">
+  <div class="map-description">
+    <h3>A THOUSAND DOORS, NEXT DOOR</h3>
+    <p>
+      Nestled in the vibrant heart of Kuala Lumpur, CloutHaus stands as a beacon of exquisite luxury living,
+      mere moments from the iconic Petronas Twin Towers and an array of esteemed tourist destinations.
+      With effortless access to highways and key routes, CloutHaus offers an unparalleled location for
+      those who seek to immerse themselves in the city’s vibrant energy and indulge in its opulent lifestyle.
+    </p>
+  </div>
+</section>
+
+<!-- Register Form Section -->
+<section id="register" class="register-section">
+  <h2>REGISTER FOR EXCLUSIVE UPDATES</h2>
+  <p>Let's Talk</p>
+  <form class="register-form" (ngSubmit)="onSubmitForm(registerForm)" #registerForm="ngForm">
+    <input type="text" placeholder="Full Name" name="fullName" ngModel required>
+    <input type="tel" placeholder="+6017-8778506" name="phone" ngModel pattern="^\+60\d{2}-\d{7,8}$" required>
+    <input type="email" placeholder="Email" name="email" ngModel required>
+    <select name="request" ngModel required>
+      <option value="" disabled selected>MAKE AN APPOINTMENT / REQUIRE MORE INFO</option>
+      <option>Appointment</option>
+      <option>More Info</option>
+    </select>
+    <textarea placeholder="Your Message" name="message" rows="5" ngModel></textarea>
+    <div class="form-buttons">
+      <button type="submit" class="submit-btn">SUBMIT</button>
+      <button type="button" class="contact-btn" (click)="onContactMe()">CONTACT ME</button>
+    </div>
+  </form>
+</section>
+
+<!-- Footer / Contact Info -->
+<footer id="contact" class="about-section" *ngIf="projectData">
+  <h2>Contact Us</h2>
+  <div class="project-info">
+    <ul>
+      <li><strong>Phone:</strong> {{ projectData.phoneNo }}</li>
+      <li><strong>Email:</strong> {{ projectData.email }}</li>
+      <li><strong>Address:</strong> {{ projectData.address1 }} {{ projectData.address2 }} {{ projectData.address3 }}</li>
+    </ul>
+  </div>
+</footer>
